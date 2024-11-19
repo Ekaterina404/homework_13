@@ -34,7 +34,7 @@ def find_key_with_nltk(cipher: CaesarsCipher, encrypted_message: str):
             if word in word_list:  # Проверяем, существует ли слово
                 print(f"Подобранный ключ: {key}")
                 print(f"Расшифрованное сообщение: {decrypted_message}")
-                return key
+                return key, decrypted_message
 
     print("Ключ не найден.")
     return None
@@ -48,9 +48,23 @@ if __name__ == "__main__":
     cipher = CaesarsCipher()
 
     # Ищем ключ с использованием NLTK
-    key = find_key_with_nltk(cipher, encrypted_message)
+    key, decrypted_message = find_key_with_nltk(cipher, encrypted_message)
 
     if key is not None:
         print(f"Ключ найден: {key}")
+
+        # Запрашиваем путь к файлу
+        file_path = input("Введите путь для сохранения результата: ")
+        #C:\Users\P2021\PycharmProjects\pythonProject\result.txt
+
+        try:
+            # Записываем результат в файл
+            with open(file_path, 'w', encoding='utf-8') as file:
+                file.write(f"Подобранный ключ: {key}\n")
+                file.write(f"Расшифрованное сообщение: {decrypted_message}\n")
+            print(f"Результаты успешно сохранены в файл: {file_path}")
+        except Exception as e:
+            print(f"Ошибка записи в файл: {e}")
+
     else:
         print("Не удалось найти ключ.")
